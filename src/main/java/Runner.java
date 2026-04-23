@@ -10,5 +10,6 @@ public class Runner {
 
     public static void main(String[] args) {
         // TODO: Implement your Minesweeper game here
-System.out.print("test");
+        System.out.print("test");
+}
 }
