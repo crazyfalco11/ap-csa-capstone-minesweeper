@@ -6,6 +6,7 @@ public class Cell {
     int x;
     int y;
     boolean revealed = false;
+    boolean isMine;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -19,7 +20,11 @@ public class Cell {
 
     public void flag() {
         // Implementation for flagging the cell
-        symbol = flag;
+        if (symbol.equals(hidden)) {
+            symbol = flag; // Set the symbol to the flag emoji
+        } else if (symbol.equals(flag)) {
+            symbol = hidden; // Unflag the cell
+        }
     }
 
     public String getSymbol() {
@@ -34,14 +39,18 @@ public class Cell {
         }
     }
 
-    public boolean isMine() {
-        return false; // Default implementation, overridden in MineCell
+    public String toString() {
+        return "cell at position (" + x + ", " + y + ")";
     }
 
-    public int getNumber() {
-        return 0; // Default implementation, overridden in NumberCell
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        };
+        return x == ((Cell)other).x && y == ((Cell)other).y;
     }
-
-
 
 }
