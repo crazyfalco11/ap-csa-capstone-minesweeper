@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class Runner {
 
     public static void main(String[] args) {
-        // TODO: Implement your Minesweeper game here
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Minesweeper!");
         System.out.print("Enter your name: ");
@@ -21,8 +20,9 @@ public class Runner {
         System.out.print("Enter number of mines: ");
         int numMines = scanner.nextInt();
         GameManager gameManager = new GameManager(playerName, width, height, numMines);
+        System.out.print("Enter your move (e.g., 'R A3' to reveal or 'F B5' to flag): \n");
+        scanner.nextLine(); // Consume the newline character after nextInt()
         while (!gameManager.getBoard().isGameOver()) {
-            System.out.print("Enter your move (e.g., 'R A3' to reveal or 'F B5' to flag): ");
             String move = scanner.nextLine();
             gameManager.makeMove(move);
         }

@@ -7,7 +7,7 @@ public class GameBoard {
 
     public GameBoard(int width, int height, int numMines) {
         board = new Cell[height][width];
-        createBoard(int numMines);
+        createBoard(numMines);
         gameOver = false;
         gameWon = false;
     }
@@ -22,6 +22,14 @@ public class GameBoard {
 
     public boolean isGameWon() {
         return gameWon;
+    }
+
+    public int getWidth() {
+        return board[0].length;
+    }
+
+    public int getHeight() {
+        return board.length;
     }
 
     public void createBoard(int numMines) {
@@ -107,10 +115,10 @@ public class GameBoard {
             sb.append(columnLabel + " "); // Add column letters for display
         }
         for (int i = 0; i < board.length; i++) {
-            for (Cell cell : row) {
-                sb.append(cell.getDisplaySymbol()).append(" ");
-            }
             sb.append("\n" + (i + 1) + " "); // Add row numbers for display
+            for (int j = 0; j < board[i].length; j++) {
+                sb.append(board[i][j].getDisplaySymbol()).append(" ");
+            }
         }
         return sb.toString();
     }
@@ -150,10 +158,10 @@ public class GameBoard {
         for (Cell[] row : board) {
             for (Cell cell : row) {
                 if (cell instanceof MineCell && !cell.getSymbol().equals("🚩")) {
-                    return false; // If there is a mine that is not flagged, the player has not won
+                    gameWon = false; // If there is a mine that is not flagged, the player has not won
                 }
                 if (!(cell instanceof MineCell) && !cell.revealed) {
-                    return false; // If there is a non-mine cell that is not revealed, the player has not won
+                    gameWon = false; // If there is a non-mine cell that is not revealed, the player has not won
                 }
             }
         }

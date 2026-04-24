@@ -33,7 +33,7 @@ public class Cell {
 
     public String getDisplaySymbol() {
         if (revealed) {
-            getSymbol(); // Return the actual symbol (number or mine) if revealed
+            return getSymbol(); // Return the actual symbol (number or mine) if revealed
         } else {
             return symbol;
         }
