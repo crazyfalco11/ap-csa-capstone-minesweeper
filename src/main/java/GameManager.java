@@ -29,13 +29,14 @@ public class GameManager {
         if (move.length() > 1) {
             move = move.substring(move.indexOf(" ") + 1); // Extract the coordinates part of the move
             if (move.length() == 2) {
-                x = Integer.parseInt(move.substring( 1));
+                x = Integer.parseInt(move.substring( 1))-1; // Convert the x coordinate from string to integer and adjust for 0-based index
                 String yString = move.substring(0,1);
                 char yChar = yString.charAt(0);
-                y = Character.getNumericValue(yChar) - Character.getNumericValue('A') + 1;
-            } else if (x < 0 || x > board.getWidth()-1 || y < 0 || y > board.getHeight()-1) {
-                System.out.println("Coordinates out of bounds! Please enter valid coordinates.");
-                return;
+                y = yChar - 'A';
+                if (x < 0 || x > board.getWidth()-1 || y < 0 || y > board.getHeight()-1) {
+                    System.out.println("Coordinates out of bounds! Please enter valid coordinates.");
+                    return;
+                }
             } else {
                 System.out.println("Invalid input format! Please enter coordinates as 'A1'.");
                 return;
