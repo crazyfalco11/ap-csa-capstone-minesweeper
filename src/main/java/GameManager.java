@@ -93,8 +93,8 @@ public class GameManager {
 
     public void displayHelp() {
         System.out.println("Commands:");
-        System.out.println("R x,y - Reveal the cell at coordinates (x,y)");
-        System.out.println("F x,y - Flag the cell at coordinates (x,y)");
+        System.out.println("R RowCol ie. A1- Reveal the cell at coordinates (A1)");
+        System.out.println("F RowCol ie. A1 - Flag the cell at coordinates (A1)");
         System.out.println("S - Display current game status");
         System.out.println("Q - Quit the game");
         System.out.println("? - Display this help message");

@@ -133,7 +133,7 @@ public class GameBoard {
             return; // Base case: out of bounds or already revealed
         }
         board[y][x].reveal(); // Reveal the current cell
-        if (board[y][x] instanceof EmptyCell) {
+        if (board[y][x] instanceof EmptyCell && !board[y][x].isFlagged()) {
             // Recursively flood fill adjacent cells if the current cell is empty
             floodFill(x + 1, y); // Right
             floodFill(x - 1, y); // Left
@@ -165,11 +165,9 @@ public class GameBoard {
             for (Cell cell : row) {
                 if (cell instanceof MineCell && !cell.isFlagged()) {
                     gameWon = false; // If there is a mine that is not flagged, the player has not won
-                    System.out.println("mine check false");
                 }
                 if (!(cell instanceof MineCell) && !cell.isRevealed()) {
                     gameWon = false; // If there is a non-mine cell that is not revealed, the player has not won
-                    System.out.println("non-mine check false");
                 }
             }
         }
