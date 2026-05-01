@@ -138,7 +138,7 @@ public class GameBoard {
         if (x < 0 || x >= board[0].length || y < 0 || y >= board.length  || board[y][x].isRevealed() || board[y][x] instanceof MineCell) {
             return; // Base case: out of bounds or already revealed
         }
-        if (!board[y][x].isFlagged())
+        if (!board[y][x].isFlagged()) {
             board[y][x].reveal(); // Reveal the current cell but not flagged cells
         }
         if (board[y][x] instanceof EmptyCell) {
