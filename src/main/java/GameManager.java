@@ -58,11 +58,15 @@ public class GameManager {
             }
             board.revealCell(x, y);
             moveHistory.add("Revealed cell at (" + (char)('A' + x) + (y + 1) + ")");
-            System.out.println(board.toString());
+            if (!(board.isGameOver())){
+                System.out.println(board.toString());
+            }
         } else if (command.equalsIgnoreCase("F")) {
             board.flagCell(x, y);
             moveHistory.add("Flagged cell at (" + (char)('A' + x) + (y + 1) + ")");
+            if (!(board.isGameOver())){
             System.out.println(board.toString());
+            }
         } else if (command.equalsIgnoreCase("Q")) {
             board.setGameOver(true);
             System.out.println("Game quit! Thanks for playing.");
@@ -84,7 +88,6 @@ public class GameManager {
         System.out.println("Move history:");
         for (String move : moveHistory) {
             System.out.println(move);
-        }
         }
     }
 

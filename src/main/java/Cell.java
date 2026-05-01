@@ -22,6 +22,10 @@ public class Cell {
         this.revealed = true;
     }
 
+    public boolean isFlagged() {
+        return flagged;
+    }
+
     public void flag() {
         // Implementation for flagging the cell
         if (flagged) {

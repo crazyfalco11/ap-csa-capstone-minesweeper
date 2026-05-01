@@ -50,7 +50,7 @@ public class GameBoard {
         while (numMines > 0) {
             int x = (int) (Math.random() * board[0].length);
             int y = (int) (Math.random() * board.length);
-            if (!(board[y][x] instanceof MineCell) && !(x == firstX && y == firstY)) {
+            if (!(board[y][x] instanceof MineCell) && !(x == firstX && y == firstY) && !(x == firstX+1 && y == firstY) && !(x == firstX-1 && y == firstY) && !(x == firstX && y == firstY+1) && !(x == firstX && y == firstY-1) && !(x == firstX+1 && y == firstY+1) && !(x == firstX-1 && y == firstY-1) && !(x == firstX+1 && y == firstY-1) && !(x == firstX-1 && y == firstY+1)) {
                 board[y][x] = new MineCell(x, y); // Place a mine at the random position
                 numMines--;
             }
@@ -101,7 +101,7 @@ public class GameBoard {
     public void flagCell(int x, int y) {
         // Implementation for flagging a cell
         board[y][x].flag();
-        if (board[y][x].getSymbol().equals("F")) {
+        if (board[y][x].isFlagged()) {
             numFlags--; // Decrease the number of flags remaining when a cell is flagged
         } else {
             numFlags++; // Increase the number of flags remaining when a cell is unflagged
@@ -163,11 +163,13 @@ public class GameBoard {
         // Implementation for checking if the player has won the game
         for (Cell[] row : board) {
             for (Cell cell : row) {
-                if (cell instanceof MineCell && !cell.getSymbol().equals("F")) {
+                if (cell instanceof MineCell && !cell.isFlagged()) {
                     gameWon = false; // If there is a mine that is not flagged, the player has not won
+                    System.out.println("mine check false");
                 }
                 if (!(cell instanceof MineCell) && !cell.isRevealed()) {
                     gameWon = false; // If there is a non-mine cell that is not revealed, the player has not won
+                    System.out.println("non-mine check false");
                 }
             }
         }
