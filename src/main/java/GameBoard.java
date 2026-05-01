@@ -127,13 +127,21 @@ public class GameBoard {
         return sb.toString();
     }
 
+    /**
+     * Implementation for flood fill algorithm to reveal adjacent empty cells when an empty cell is revealed
+     * 
+     * @param x
+     * @param y
+     */
     public void floodFill(int x, int y) {
         // Implementation for flood fill algorithm to reveal adjacent empty cells
         if (x < 0 || x >= board[0].length || y < 0 || y >= board.length  || board[y][x].isRevealed() || board[y][x] instanceof MineCell) {
             return; // Base case: out of bounds or already revealed
         }
-        board[y][x].reveal(); // Reveal the current cell
-        if (board[y][x] instanceof EmptyCell && !board[y][x].isFlagged()) {
+        if (!board[y][x].isFlagged())
+            board[y][x].reveal(); // Reveal the current cell but not flagged cells
+        }
+        if (board[y][x] instanceof EmptyCell) {
             // Recursively flood fill adjacent cells if the current cell is empty
             floodFill(x + 1, y); // Right
             floodFill(x - 1, y); // Left
@@ -142,6 +150,10 @@ public class GameBoard {
         }
     }
 
+
+    /**
+     * Implementation for revealing all mines on the board when a mine cell is revealed, which ends the game
+     */
     public void revealMines() {
         // Implementation for revealing all mines on the board
         for (Cell[] row : board) {
