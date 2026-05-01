@@ -5,11 +5,13 @@ public class GameManager {
     private GameBoard board;
     private ArrayList<String> moveHistory;
     private String playerName;
+    boolean firstMoveMade;
 
     public GameManager(String playerName, int width, int height, int numMines) {
         this.playerName = playerName;
         this.board = new GameBoard(width, height, numMines);
         this.moveHistory = new ArrayList<>();
+        this.firstMoveMade = false;
         System.out.println("Game started! Good luck, " + playerName + "!");
         System.out.println(board.toString());
     }
@@ -25,14 +27,18 @@ public class GameManager {
             System.out.println("Game over! Please start a new game.");
             return;
         }
+        if (move == null || move.length() < 1) {
+            System.out.println("Invalid input! Please enter a valid move.");
+            return;
+        }
         String command = move.substring(0, 1);
         if (move.length() > 1) {
             move = move.substring(move.indexOf(" ") + 1); // Extract the coordinates part of the move
             if (move.length() == 2) {
-                x = Integer.parseInt(move.substring( 1))-1; // Convert the x coordinate from string to integer and adjust for 0-based index
-                String yString = move.substring(0,1);
-                char yChar = yString.charAt(0);
-                y = yChar - 'A';
+                y = Integer.parseInt(move.substring( 1))-1; // Convert the y coordinate from string to integer and adjust for 0-based index
+                String xString = move.substring(0,1);
+                char xChar = xString.charAt(0);
+                x = xChar - 'A';
                 if (x < 0 || x > board.getWidth()-1 || y < 0 || y > board.getHeight()-1) {
                     System.out.println("Coordinates out of bounds! Please enter valid coordinates.");
                     return;
@@ -46,12 +52,16 @@ public class GameManager {
             y = -1;
         }
         if (command.equalsIgnoreCase("R")) {
+            if (!firstMoveMade) {
+                board.firstMove(x, y);
+                firstMoveMade = true;
+            }
             board.revealCell(x, y);
-            moveHistory.add("Revealed cell at (" + x + ", " + y + ")");
+            moveHistory.add("Revealed cell at (" + (char)('A' + x) + (y + 1) + ")");
             System.out.println(board.toString());
         } else if (command.equalsIgnoreCase("F")) {
             board.flagCell(x, y);
-            moveHistory.add("Flagged cell at (" + x + ", " + y + ")");
+            moveHistory.add("Flagged cell at (" + (char)('A' + x) + (y + 1) + ")");
             System.out.println(board.toString());
         } else if (command.equalsIgnoreCase("Q")) {
             board.setGameOver(true);
@@ -70,16 +80,11 @@ public class GameManager {
         System.out.println("Player: " + playerName);
         System.out.println("Mines remaining: " + board.minesRemaining());
         System.out.println("Game status: ");
-        if (board.isGameWon()) {
-            System.out.println("Congratulations! You've won the game!");
-        } else if (board.isGameOver()) {
-            System.out.println("Game over! You've hit a mine.");
-        } else {
-            System.out.println("Game in progress...");
-        }
+        System.out.println("Game in progress...");
         System.out.println("Move history:");
         for (String move : moveHistory) {
             System.out.println(move);
+        }
         }
     }
 

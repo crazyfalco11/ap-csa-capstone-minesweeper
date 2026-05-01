@@ -2,12 +2,7 @@ public class MineCell extends Cell {
 
     public MineCell(int x, int y) {
         super(x, y);
-        symbol = "💣";
-    }
-
-    @Override
-    public String getSymbol() {
-        return symbol;
+        symbol = "*"; // Set the symbol for a mine cell to an asterisk
     }
 
     @Override

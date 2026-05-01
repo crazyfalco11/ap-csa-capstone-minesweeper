@@ -6,11 +6,6 @@ public class NumberCell extends Cell   {
     }
 
     @Override
-    public String getSymbol() {
-        return symbol;
-    }
-
-    @Override
     public String toString() {
         if(revealed) {
             return "revealed number cell at position (" + x + ", " + y + ")";

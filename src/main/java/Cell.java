@@ -1,17 +1,21 @@
 public class Cell {
 
-    String flag = "🚩";
-    String hidden = "⬜";
-    String symbol;
-    int x;
-    int y;
-    boolean revealed = false;
-    boolean isMine;
+    protected String flag = "F";
+    protected String hidden = ".";
+    protected String symbol;
+    protected int x;
+    protected int y;
+    protected boolean revealed = false;
+    protected boolean flagged = false;
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
         symbol = hidden;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
     }
 
     public void reveal() {
@@ -20,10 +24,10 @@ public class Cell {
 
     public void flag() {
         // Implementation for flagging the cell
-        if (symbol.equals(hidden)) {
-            symbol = flag; // Set the symbol to the flag emoji
-        } else if (symbol.equals(flag)) {
-            symbol = hidden; // Unflag the cell
+        if (flagged) {
+            flagged = false; // Set the symbol to the flag emoji
+        } else {
+            flagged = true; // Set the symbol to the flag emoji
         }
     }
 
@@ -34,8 +38,10 @@ public class Cell {
     public String getDisplaySymbol() {
         if (revealed) {
             return getSymbol(); // Return the actual symbol (number or mine) if revealed
+        } else if (flagged) {
+            return flag; // Return the flag symbol if the cell is flagged
         } else {
-            return symbol;
+            return hidden; // Return the hidden symbol if the cell is not revealed or flagged
         }
     }
 

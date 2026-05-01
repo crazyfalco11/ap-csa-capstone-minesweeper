@@ -3,13 +3,13 @@ public class GameBoard {
     private Cell[][] board;
     private int numFlags;
     private boolean gameOver;
-    private boolean gameWon;
+    private int numMines;
 
     public GameBoard(int width, int height, int numMines) {
         board = new Cell[height][width];
-        createBoard(numMines);
+        createBoard();
+        this.numMines = numMines;
         gameOver = false;
-        gameWon = false;
     }
 
     public boolean isGameOver() {
@@ -20,10 +20,6 @@ public class GameBoard {
         this.gameOver = gameOver;
     }
 
-    public boolean isGameWon() {
-        return gameWon;
-    }
-
     public int getWidth() {
         return board[0].length;
     }
@@ -32,23 +28,29 @@ public class GameBoard {
         return board.length;
     }
 
-    public void createBoard(int numMines) {
+    public void createBoard() {
         // Implementation for creating the game board with the specified number of mines
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new EmptyCell(j, i); // Initialize all cells as empty
             }
-            placeMines(numMines);
         }
+    }
+
+    public void firstMove(int x, int y) {
+        // Implementation for handling the first move of the game to ensure the first revealed cell is not a mine
+        placeMines(numMines, x, y); // Place mines on the board after the first move to ensure the first revealed cell is not a mine
+        calculateNumbers(); // Calculate the numbers for each cell based on adjacent mines after placing mines
+        revealCell(x, y);
         this.numFlags = numMines; // Set the number of flags equal to the number of mines
     }
 
-    public void placeMines(int numMines) {
+    public void placeMines(int numMines, int firstX, int firstY) {
         // Implementation for placing mines randomly on the board
         while (numMines > 0) {
             int x = (int) (Math.random() * board[0].length);
             int y = (int) (Math.random() * board.length);
-            if (!(board[y][x] instanceof MineCell)) {
+            if (!(board[y][x] instanceof MineCell) && !(x == firstX && y == firstY)) {
                 board[y][x] = new MineCell(x, y); // Place a mine at the random position
                 numMines--;
             }
@@ -86,23 +88,25 @@ public class GameBoard {
 
     public void revealCell(int x, int y) {
         // Implementation for revealing a cell and its adjacent cells if it's an empty cell
-            board[y][x].reveal(); // Reveal the cell if it's not an empty cell
             if (board[y][x] instanceof EmptyCell) {
                 floodFill(x, y); // If it's an empty cell, perform flood fill to reveal adjacent cells
             } else if (board[y][x] instanceof MineCell) {
                 revealMines(); // If it's a mine cell, reveal all mines and end the game
                 gameOver = true;
             }
+            board[y][x].reveal(); // Reveal the cell if it's not an empty cell
+            checkWin(); // Check if the player has won after revealing a cell
     }
 
     public void flagCell(int x, int y) {
         // Implementation for flagging a cell
         board[y][x].flag();
-        if (board[y][x].getSymbol().equals("🚩")) {
+        if (board[y][x].getSymbol().equals("F")) {
             numFlags--; // Decrease the number of flags remaining when a cell is flagged
         } else {
             numFlags++; // Increase the number of flags remaining when a cell is unflagged
         }
+        checkWin(); // Check if the player has won after flagging a cell
     }
 
     public String toString() {
@@ -125,7 +129,7 @@ public class GameBoard {
 
     public void floodFill(int x, int y) {
         // Implementation for flood fill algorithm to reveal adjacent empty cells
-        if (x < 0 || x >= board[0].length || y < 0 || y >= board.length || board[y][x].revealed || board[y][x] instanceof MineCell) {
+        if (x < 0 || x >= board[0].length || y < 0 || y >= board.length  || board[y][x].isRevealed() || board[y][x] instanceof MineCell) {
             return; // Base case: out of bounds or already revealed
         }
         board[y][x].reveal(); // Reveal the current cell
@@ -147,6 +151,7 @@ public class GameBoard {
                 }
             }
         }
+        System.out.println("Game over! You've hit a mine.");
     }
 
     public int minesRemaining() {
@@ -154,18 +159,22 @@ public class GameBoard {
     }
 
     public void checkWin() {
+        boolean gameWon = true; // Assume the player has won until we find a condition that proves otherwise
         // Implementation for checking if the player has won the game
         for (Cell[] row : board) {
             for (Cell cell : row) {
-                if (cell instanceof MineCell && !cell.getSymbol().equals("🚩")) {
+                if (cell instanceof MineCell && !cell.getSymbol().equals("F")) {
                     gameWon = false; // If there is a mine that is not flagged, the player has not won
                 }
-                if (!(cell instanceof MineCell) && !cell.revealed) {
+                if (!(cell instanceof MineCell) && !cell.isRevealed()) {
                     gameWon = false; // If there is a non-mine cell that is not revealed, the player has not won
                 }
             }
         }
-        gameWon = true; // If all mines are flagged and all non-mine cells are revealed, the player has won
+        if (gameWon) {
+            System.out.println("Congratulations! You've won the game!");
+            gameOver = true; // Set the game over flag to true when the player wins
+        }
     }
 
 }

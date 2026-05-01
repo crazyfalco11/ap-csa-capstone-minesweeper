@@ -2,12 +2,7 @@ public class EmptyCell extends Cell {
 
     public EmptyCell(int x, int y) {
         super(x, y);
-        symbol = "⬛";
-    }
-
-    @Override
-    public String getSymbol() {
-        return symbol;
+        symbol = " "; // Set the symbol for an empty cell to a space
     }
 
     @Override
