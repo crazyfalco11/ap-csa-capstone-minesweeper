@@ -10,7 +10,6 @@ public class Cell {
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        symbol = hidden;
     }
 
     public boolean isRevealed() {
@@ -35,12 +34,12 @@ public class Cell {
     }
 
     public String getSymbol() {
-        return symbol;
+        return hidden; // Default symbol for a cell (can be overridden in subclasses)
     }
 
     public String getDisplaySymbol() {
         if (revealed) {
-            return getSymbol(); // Return the actual symbol (number or mine) if revealed
+            return getSymbol(); // Return the actual symbol (number, empty, or mine) if revealed
         } else if (flagged) {
             return flag; // Return the flag symbol if the cell is flagged
         } else {
