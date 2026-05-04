@@ -1,5 +1,12 @@
 public class NumberCell extends Cell   {
 
+    private String symbol;
+
+    @Override
+    public String getSymbol() {
+        return symbol;
+    }
+
     public NumberCell(int x, int y, int number) {
         super(x, y);
         this.symbol = Integer.toString(number);

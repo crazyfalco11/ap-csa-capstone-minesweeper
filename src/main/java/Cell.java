@@ -2,7 +2,6 @@ public class Cell {
 
     protected String flag = "F";
     protected String hidden = ".";
-    protected String symbol;
     protected int x;
     protected int y;
     protected boolean revealed = false;
