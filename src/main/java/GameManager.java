@@ -68,10 +68,21 @@ public class GameManager {
                 System.out.println("Invalid input format! Please enter coordinates as 'A1'.");
                 return;
             }
-        } else {
-            x = -1;
-            y = -1;
         }
+        executeMove(command, x, y); // Execute the move based on the command and coordinates
+     }
+
+     /**
+      * Implementation for the executeMove method to perform the actual move execution based on the player's command and coordinates, which updates the game board accordingly (reveal or flag a cell), tracks the move history, and checks for game over conditions, allowing the player to interact with the game and providing feedback on their actions during gameplay
+      * 
+      * precondition: the executeMove method is called with a valid command and coordinates, which performs the move execution by updating the game board accordingly (reveal or flag a cell), tracking the move history, and checking for game over conditions, allowing the player to interact with the game and providing feedback on their actions during gameplay
+      * postcondition: the executeMove method will perform the move execution by updating the game board accordingly (reveal or flag a cell), tracking the move history, and checking for game over conditions, allowing the player to interact with the game and providing feedback on their actions during gameplay, which is essential for the functionality of the Minesweeper game and enhances the player's experience by allowing them to see the results of their actions on the game board and providing feedback on their moves during gameplay
+      * 
+      * @param command
+      * @param x
+      * @param y
+      */
+     public void executeMove(String command, int x, int y) {
         if (command.equalsIgnoreCase("R")) {
             if (!firstMoveMade) {
                 board.firstMove(x, y);
@@ -81,13 +92,16 @@ public class GameManager {
             moveHistory.add("Revealed cell at (" + (char)('A' + x) + (y + 1) + ")");
             if (!(board.isGameOver())){
                 System.out.println(board.toString());
+            } else {
+                System.out.println(board.toString()); // Display the final state of the board when the game is over
+                printMoveHistory(); // Print the move history when the game is over
+                System.out.println("Congratulations! You've won the game!");
+
             }
         } else if (command.equalsIgnoreCase("F")) {
             board.flagCell(x, y);
             moveHistory.add("Flagged cell at (" + (char)('A' + x) + (y + 1) + ")");
-            if (!(board.isGameOver())){
             System.out.println(board.toString());
-            }
         } else if (command.equalsIgnoreCase("Q")) {
             board.setGameOver(true);
             System.out.println("Game quit! Thanks for playing.");
@@ -99,7 +113,7 @@ public class GameManager {
             System.out.println("Invalid command! Use 'R' to reveal and 'F' to flag.");
             return;
         }
-     }
+    }
 
 
      /**
@@ -113,7 +127,17 @@ public class GameManager {
         System.out.println("Mines remaining: " + board.minesRemaining());
         System.out.println("Game status: ");
         System.out.println("Game in progress...");
-        System.out.println("Move history:");
+        printMoveHistory();
+    }
+
+    /**
+     * Implementation for the printMoveHistory method to display the history of moves made by the player during the game, allowing players to review their actions and learn from their gameplay, and also providing a way for developers to debug and analyze the game state during development
+     * 
+     * precondition: the printMoveHistory method is called, which prints the history of moves made by the player during the game, allowing players to review their actions and learn from their gameplay, and also providing a way for developers to debug and analyze the game state during development
+     * postcondition: the printMoveHistory method will print the history of moves made by the player during the game to the console, allowing players to review their actions and learn from their gameplay, and also providing a way for developers to debug and analyze the game state during development, which enhances the player's experience by providing insights into their gameplay and allows developers to understand the sequence of actions taken during the game for troubleshooting and improvement purposes
+     */
+    public void printMoveHistory() {
+        System.out.println("Move History:");
         for (String move : moveHistory) {
             System.out.println(move);
         }

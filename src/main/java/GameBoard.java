@@ -133,10 +133,8 @@ public class GameBoard {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (x + j >= 0 && x + j < board[0].length && y + i >= 0 && y + i < board.length) {
-                    if (board[y + i][x + j] instanceof MineCell) {
-                        count++;
-                    }
+                if (x + j >= 0 && x + j < board[0].length && y + i >= 0 && y + i < board.length && board[y + i][x + j] instanceof MineCell){
+                    count++;
                 }
             }
         }
@@ -155,14 +153,19 @@ public class GameBoard {
      */
     public void revealCell(int x, int y) {
         // Implementation for revealing a cell and its adjacent cells if it's an empty cell
-            if (board[y][x] instanceof EmptyCell) {
+            if (board[x][y].isRevealed()) {
+                System.out.println("Cell is already revealed."); // If the cell is already revealed, do nothing
+            } else if (board[y][x].isFlagged()) {
+                System.out.println("Cell is flagged, cannot reveal."); // If the cell is flagged, do not reveal it
+            } else if (board[y][x] instanceof EmptyCell) {
                 floodFill(x, y); // If it's an empty cell, perform flood fill to reveal adjacent cells
             } else if (board[y][x] instanceof MineCell) {
                 revealMines(); // If it's a mine cell, reveal all mines and end the game
                 gameOver = true;
+            } else {
+                board[y][x].reveal(); // Reveal the cell if it's not an empty cell
             }
-            board[y][x].reveal(); // Reveal the cell if it's not an empty cell
-            checkWin(); // Check if the player has won after revealing a cell
+        checkWin(); // Check if the player has won after revealing a cell
     }
 
 
@@ -236,6 +239,10 @@ public class GameBoard {
             floodFill(x - 1, y); // Left
             floodFill(x, y + 1); // Down
             floodFill(x, y - 1); // Up
+            floodFill(x + 1, y + 1); // Down-Right
+            floodFill(x - 1, y - 1); // Up-Left
+            floodFill(x + 1, y - 1); // Up-Right
+            floodFill(x - 1, y + 1); // Down-Left
         }
     }
 
@@ -275,18 +282,12 @@ public class GameBoard {
         // Implementation for checking if the player has won the game
         for (Cell[] row : board) {
             for (Cell cell : row) {
-                if (cell instanceof MineCell && !cell.isFlagged()) {
-                    gameWon = false; // If there is a mine that is not flagged, the player has not won
-                }
                 if (!(cell instanceof MineCell) && !cell.isRevealed()) {
                     gameWon = false; // If there is a non-mine cell that is not revealed, the player has not won
                 }
             }
         }
-        if (gameWon) {
-            System.out.println("Congratulations! You've won the game!");
-            gameOver = true; // Set the game over flag to true when the player wins
-        }
+            gameOver = gameWon; // Set the game over flag to true when the player wins
     }
 
 }
