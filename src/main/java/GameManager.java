@@ -20,11 +20,11 @@ public class GameManager {
      * @param numMines
      */
     public GameManager(String playerName, int width, int height, int numMines) {
-        this.playerName = playerName;
+        this.playerName = playerName.toUpperCase(); // Convert the player's name to uppercase for a consistent display format
         this.board = new GameBoard(width, height, numMines);
         this.moveHistory = new ArrayList<>();
         this.firstMoveMade = false;
-        System.out.println("Game started! Good luck, " + playerName + "!");
+        System.out.println("Game started! Good luck, " + this.playerName + "!");
         System.out.println(board.toString());
     }
 
@@ -95,8 +95,11 @@ public class GameManager {
             } else {
                 System.out.println(board.toString()); // Display the final state of the board when the game is over
                 printMoveHistory(); // Print the move history when the game is over
-                System.out.println("Congratulations! You've won the game!");
-
+                if (board.isGameLost()) {
+                    System.out.println("Game over! You've hit a mine. Better luck next time, " + playerName + "!");
+                } else {
+                    System.out.println("Congratulations " + playerName + "! You've won the game!");
+                }
             }
         } else if (command.equalsIgnoreCase("F")) {
             board.flagCell(x, y);

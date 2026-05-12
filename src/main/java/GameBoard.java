@@ -4,6 +4,7 @@ public class GameBoard {
     private int numFlags;
     private boolean gameOver;
     private int numMines;
+    private boolean gameLost;
 
 
     /**
@@ -25,6 +26,10 @@ public class GameBoard {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isGameLost() {
+        return gameLost;
     }
 
     public void setGameOver(boolean gameOver) {
@@ -153,15 +158,14 @@ public class GameBoard {
      */
     public void revealCell(int x, int y) {
         // Implementation for revealing a cell and its adjacent cells if it's an empty cell
-            if (board[x][y].isRevealed()) {
+            if (board[y][x] instanceof MineCell) {
+                revealMines(); // If it's a mine cell, reveal all mines and end the game
+            } else if (board[y][x].isRevealed()) {
                 System.out.println("Cell is already revealed."); // If the cell is already revealed, do nothing
             } else if (board[y][x].isFlagged()) {
                 System.out.println("Cell is flagged, cannot reveal."); // If the cell is flagged, do not reveal it
             } else if (board[y][x] instanceof EmptyCell) {
                 floodFill(x, y); // If it's an empty cell, perform flood fill to reveal adjacent cells
-            } else if (board[y][x] instanceof MineCell) {
-                revealMines(); // If it's a mine cell, reveal all mines and end the game
-                gameOver = true;
             } else {
                 board[y][x].reveal(); // Reveal the cell if it's not an empty cell
             }
@@ -262,7 +266,8 @@ public class GameBoard {
                 }
             }
         }
-        System.out.println("Game over! You've hit a mine.");
+        gameOver = true; // Set the game over flag to true when a mine is revealed
+        gameLost = true; // Set the game lost flag to true when a mine is revealed
     }
 
     public int minesRemaining() {
@@ -278,6 +283,9 @@ public class GameBoard {
      * 
      */
     public void checkWin() {
+        if (gameOver) {
+            return; // If the game is already over, do not check for a win
+        }
         boolean gameWon = true; // Assume the player has won until we find a condition that proves otherwise
         // Implementation for checking if the player has won the game
         for (Cell[] row : board) {
