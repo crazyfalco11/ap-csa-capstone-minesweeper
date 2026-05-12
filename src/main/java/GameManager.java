@@ -55,8 +55,9 @@ public class GameManager {
         String command = move.substring(0, 1);
         if (move.length() > 1) {
             move = move.substring(move.indexOf(" ") + 1); // Extract the coordinates part of the move
-            if (move.length() == 2) {
+            if ((move.length() == 2 && board.getWidth() <= 9) || ((move.length() == 2 || move.length() == 3) && board.getWidth() > 9)) { // Validate the format of the coordinates based on the board width
                 y = Integer.parseInt(move.substring( 1))-1; // Convert the y coordinate from string to integer and adjust for 0-based index
+                System.out.println("Parsed y coordinate: " + y); // Debug statement to check the parsed y coordinate
                 String xString = move.substring(0,1);
                 char xChar = xString.charAt(0);
                 x = xChar - 'A';

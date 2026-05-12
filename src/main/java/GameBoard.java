@@ -158,12 +158,12 @@ public class GameBoard {
      */
     public void revealCell(int x, int y) {
         // Implementation for revealing a cell and its adjacent cells if it's an empty cell
-            if (board[y][x] instanceof MineCell) {
+            if (board[y][x].isFlagged()) {
+                System.out.println("Cell is flagged, cannot reveal."); // If the cell is flagged, do not reveal it
+            } else if (board[y][x] instanceof MineCell) {
                 revealMines(); // If it's a mine cell, reveal all mines and end the game
             } else if (board[y][x].isRevealed()) {
                 System.out.println("Cell is already revealed."); // If the cell is already revealed, do nothing
-            } else if (board[y][x].isFlagged()) {
-                System.out.println("Cell is flagged, cannot reveal."); // If the cell is flagged, do not reveal it
             } else if (board[y][x] instanceof EmptyCell) {
                 floodFill(x, y); // If it's an empty cell, perform flood fill to reveal adjacent cells
             } else {
@@ -205,14 +205,18 @@ public class GameBoard {
     public String toString() {
         // Implementation for converting the game board to a string representation
         StringBuilder sb = new StringBuilder();
-            sb.append("  "); // Add initial spacing for column numbers
+            sb.append("   "); // Add initial spacing for column numbers
         for (int i = 0; i < board[0].length; i++) {
             char letter = (char)('A' + i); // Convert column index to letter (A, B, C, etc.)
             String columnLabel = Character.toString(letter);
             sb.append(columnLabel + " "); // Add column letters for display
         }
         for (int i = 0; i < board.length; i++) {
+            if (i < 9) {
+                sb.append("\n " + (i + 1) + " "); // Add row numbers for display with extra space for single-digit numbers
+            } else {
             sb.append("\n" + (i + 1) + " "); // Add row numbers for display
+            }
             for (int j = 0; j < board[i].length; j++) {
                 sb.append(board[i][j].getDisplaySymbol()).append(" ");
             }
