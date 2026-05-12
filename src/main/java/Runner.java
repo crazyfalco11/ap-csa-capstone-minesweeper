@@ -22,11 +22,11 @@ public class Runner {
         System.out.println("Welcome to Minesweeper!"); // Greet the player and introduce the game
         System.out.print("Enter your name: "); // Prompt the player to enter their name for a personalized gaming experience
         String playerName = scanner.nextLine();
-        System.out.print("Enter board width: "); // Prompt the player to enter the width of the game board, allowing them to customize the size of the game board for a more personalized gaming experience
+        System.out.print("Enter board width (max 26): "); // Prompt the player to enter the width of the game board, allowing them to customize the size of the game board for a more personalized gaming experience
         int width = scanner.nextInt();
-        System.out.print("Enter board height: "); // Prompt the player to enter the height of the game board, allowing them to customize the size of the game board for a more personalized gaming experience
+        System.out.print("Enter board height (max 99): "); // Prompt the player to enter the height of the game board, allowing them to customize the size of the game board for a more personalized gaming experience
         int height = scanner.nextInt();
-        System.out.print("Enter number of mines: "); // Prompt the player to enter the number of mines on the game board, allowing them to customize the difficulty level of the game for a more personalized gaming experience
+        System.out.print("Enter number of mines recommended " + (width * height)/6 + " (max " + (width * height - 9) + "): "); // Prompt the player to enter the number of mines on the game board, allowing them to customize the difficulty level of the game for a more personalized gaming experience
         int numMines = scanner.nextInt();
         GameManager gameManager = new GameManager(playerName, width, height, numMines); // Initialize the GameManager with the player's name and game settings, allowing it to manage the overall game state and handle player interactions during gameplay
         System.out.print("Enter your move (e.g., 'R A3' to reveal or 'F B5' to flag): \n"); // Prompt the player to enter their move, providing an example of the expected input format for revealing or flagging a cell, allowing the player to interact with the game and make informed decisions during gameplay
